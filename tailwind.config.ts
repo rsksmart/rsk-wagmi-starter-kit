@@ -18,6 +18,11 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        neueMachinaLight: ["NeueMachina-100", "sans-serif"],
+        neueMachinaMedium: ["NeueMachina-400", "sans-serif"],
+        neueMachinaBold: ["NeueMachina-800", "sans-serif"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
