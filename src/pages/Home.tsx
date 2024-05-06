@@ -12,7 +12,7 @@ export default function Home() {
 
   return (
     <main className="h-[300vh] max-w-[1100px] mx-auto">
-      <section className="mx-auto mt-28 flex flex-col items-center min-h-svh">
+      <section className="mx-auto flex flex-col items-center justify-center min-h-[90vh]">
         <h1 className="text-[7em] text-center font-bold font-neueMachinaBold text-balance leading-tight text-black">
           <span className="bg-orange-400 pt-5 px-2 ">Hackathon's</span>{" "}
           <span className="bg-fuchsia-500 pt-5 px-2">Starter</span>{" "}
