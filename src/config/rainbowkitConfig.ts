@@ -4,6 +4,6 @@ import { rootstock } from "wagmi/chains";
 
 export const rainbowkitConfig = getDefaultConfig({
   appName: "Rootstock Rainbowkit",
-  projectId: "YOUR_PROJECT_ID",
+  projectId: import.meta.env.VITE_WC_PROJECT_ID,
   chains: [rootstock, rsktestnet],
 });
