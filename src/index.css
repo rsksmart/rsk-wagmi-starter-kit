@@ -39,15 +39,15 @@
 
 @font-face {
   font-family: "NeueMachina-100";
-  src: url("/public/fonts/NeueMachina-Light.otf") format("opentype");
+  src: url("/fonts/NeueMachina-Light.otf") format("opentype");
 }
 
 @font-face {
   font-family: "NeueMachina-400";
-  src: url("/public/fonts/NeueMachina-Regular.otf") format("opentype");
+  src: url("/fonts/NeueMachina-Regular.otf") format("opentype");
 }
 
 @font-face {
   font-family: "NeueMachina-800";
-  src: url("/public/fonts/NeueMachina-Ultrabold.otf") format("opentype");
+  src: url("/fonts/NeueMachina-Ultrabold.otf") format("opentype");
 }
