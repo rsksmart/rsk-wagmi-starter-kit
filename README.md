@@ -9,7 +9,7 @@ This starter kit provides a foundation for building decentralized applications (
 - Prettier and eslint configured for project files.
 - Tailwindcss and Shadcn configured for style customization.
 
-Check the live demo here:
+Check the live demo here: https://rsk-wagmi-starter-kit.vercel.app/
 
 ## Project Structure
 
@@ -48,7 +48,9 @@ cd rsk-wagmi-starter-kit
 ```
 
 #### 2. Install Dependencies
+
 > **Note**: We recommend using yarn package manager given that there are some conflicts when installing some packages with npm.
+
 ```shell
 yarn
 ```
