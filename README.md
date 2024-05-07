@@ -48,7 +48,7 @@ cd rsk-wagmi-starter-kit
 ```
 
 #### 2. Install Dependencies
-
+> **Note**: We recommend using yarn package manager given that there are some conflicts when installing some packages with npm.
 ```shell
 yarn
 ```
