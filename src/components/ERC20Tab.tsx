@@ -3,22 +3,48 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Button from "@/components/ui/button";
 import { useState } from "react";
 import Loader from "@/components/ui/loader";
-import { useAccount } from "wagmi";
+import { useAccount, useReadContract, useWriteContract } from "wagmi";
+import { abi } from "@/assets/abis/ERC20abi";
+import { useToast } from "@/components/ui/use-toast";
+import { ERC20_ADDRESS } from "@/lib/constants";
 
 export default function ERC20Tab(): JSX.Element {
+  const { toast } = useToast();
   const [loading, setLoading] = useState<boolean>(false);
   const { address } = useAccount();
 
+  const { data, isLoading, isError } = useReadContract({
+    abi,
+    address: ERC20_ADDRESS,
+    functionName: "balanceOf",
+    args: [address],
+  });
+
+  const { writeContractAsync } = useWriteContract();
+
   const mintTokens = async () => {
-    console.log(address);
     setLoading(true);
     try {
-      // TODO: mint tokens
+      await writeContractAsync({
+        abi,
+        address: ERC20_ADDRESS,
+        functionName: "mint",
+        args: [address, 100],
+      });
+
+      setLoading(false);
+      toast({
+        title: "Successfully minted tRSK tokens",
+        description: "Refresh the page to see changes",
+      });
     } catch (e) {
+      toast({
+        title: "Error",
+        description: "Failed to mint tRSK tokens",
+        variant: "destructive",
+      });
       setLoading(false);
       console.error(e);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -49,7 +75,7 @@ export default function ERC20Tab(): JSX.Element {
           </p>
         </div>
         <div className="text-center z-[-10]">
-          <Button disabled={loading} onClick={mintTokens}>
+          <Button disabled={loading || !address} onClick={mintTokens}>
             {loading ? <Loader /> : "Deposit"}
           </Button>
         </div>
@@ -57,7 +83,19 @@ export default function ERC20Tab(): JSX.Element {
           <h4 className="text-lg font-medium mb-2">Your Balance</h4>
           <div className="flex items-center justify-between">
             <span className="text-gray-400">tRSK Tokens</span>
-            <span className="font-medium">0</span>
+            <span className="font-medium">
+              {address ? (
+                isLoading ? (
+                  <Loader />
+                ) : isError ? (
+                  "error"
+                ) : (
+                  Number(data).toLocaleString("en-US")
+                )
+              ) : (
+                0
+              )}
+            </span>
           </div>
         </div>
       </CardContent>
