@@ -80,8 +80,12 @@ export default function ERC721Tab(): JSX.Element {
             <p>Enter the NFT metadata and the claim your NFT</p>
           </div>
 
-          <Button className="w-full" disabled={loading} onClick={mintNFT}>
-            {address ? loading ? <Loader /> : "Mint NFT" : 0}
+          <Button
+            className="w-full"
+            disabled={loading || !address}
+            onClick={mintNFT}
+          >
+            {loading ? <Loader /> : "Mint NFT"}
           </Button>
         </div>
         <div className="bg-secondary p-4 rounded-lg mt-5">

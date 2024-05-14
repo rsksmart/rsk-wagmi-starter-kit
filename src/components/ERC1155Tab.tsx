@@ -22,14 +22,26 @@ import { rainbowkitConfig } from "@/config/rainbowkitConfig";
 export default function ERC1155Tab(): JSX.Element {
   const { toast } = useToast();
   const [loading, setLoading] = useState<boolean>(false);
-  const [value, setValue] = useState<number>(1);
+  const [value, setValue] = useState<number>(0);
   const { address } = useAccount();
 
   const { data, isLoading, isError, refetch } = useReadContract({
     abi,
     address: ERC1155_ADDRESS,
     functionName: "balanceOf",
-    args: [address, value],
+    args: [address, 1],
+  });
+
+  const {
+    data: data2,
+    isLoading: isLoading2,
+    isError: isError2,
+    refetch: refetch2,
+  } = useReadContract({
+    abi,
+    address: ERC1155_ADDRESS,
+    functionName: "balanceOf",
+    args: [address, 2],
   });
 
   const { writeContractAsync } = useWriteContract();
@@ -49,16 +61,19 @@ export default function ERC1155Tab(): JSX.Element {
       });
 
       toast({
-        title: "Successfully minted NFT",
-        description: "A NRSK NFT has been minted to your wallet",
+        title: "Successfully minted",
+        description: `${
+          value === 1 ? "Type A" : "Type B"
+        } tokens have been minted to your wallet`,
       });
       setLoading(false);
       refetch();
+      refetch2();
     } catch (error) {
       console.log(error);
       toast({
         title: "Error",
-        description: "Failed to mint NFT",
+        description: "Failed to mint tokens",
         variant: "destructive",
       });
       setLoading(false);
@@ -68,7 +83,9 @@ export default function ERC1155Tab(): JSX.Element {
   return (
     <Card className="mt-10 max-w-[600px]">
       <CardHeader>
-        <p className="text-white/80 mb-4">Mint ERC-1155 tokens.</p>
+        <p className="text-white/80 mb-4">
+          Mint tokens through ERC-1155 standard.
+        </p>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
@@ -87,7 +104,10 @@ export default function ERC1155Tab(): JSX.Element {
             </span>
             <p>Select the token type you'd like to mint:</p>
           </div>
-          <Select onValueChange={(value) => setValue(parseInt(value))}>
+          <Select
+            onValueChange={(value) => setValue(parseInt(value))}
+            disabled={loading}
+          >
             <SelectTrigger className="w-[90%] mx-auto">
               <SelectValue placeholder="Select a token" />
             </SelectTrigger>
@@ -108,9 +128,9 @@ export default function ERC1155Tab(): JSX.Element {
           </Button>
         </div>
         <div className="bg-secondary p-4 rounded-lg mt-5">
-          <h4 className="text-lg font-medium mb-2">Your Balance</h4>
+          <h4 className="text-lg font-medium mb-2">Your Balances</h4>
           <div className="flex items-center justify-between">
-            <span className="text-gray-400">tRSK Tokens</span>
+            <span className="text-gray-400">Type A Tokens</span>
             <span className="font-medium">
               {address ? (
                 isLoading ? (
@@ -119,6 +139,22 @@ export default function ERC1155Tab(): JSX.Element {
                   "error"
                 ) : (
                   Number(data).toLocaleString("en-US")
+                )
+              ) : (
+                0
+              )}
+            </span>
+          </div>
+          <div className="flex items-center justify-between mt-2">
+            <span className="text-gray-400">Type B Tokens</span>
+            <span className="font-medium">
+              {address ? (
+                isLoading2 ? (
+                  <Loader />
+                ) : isError2 ? (
+                  "error"
+                ) : (
+                  Number(data2).toLocaleString("en-US")
                 )
               ) : (
                 0
