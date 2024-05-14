@@ -5,7 +5,7 @@ import ERC1155Tab from "./ERC1155Tab";
 
 export default function TokenTabs(): JSX.Element {
   return (
-    <section className=" grid place-items-center py-[100px]" id="tabs">
+    <section className=" grid place-items-center pt-[100px]" id="tabs">
       <Tabs
         defaultValue="20"
         className=" flex flex-col justify-center items-center"

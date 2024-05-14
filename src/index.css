@@ -51,3 +51,39 @@
   font-family: "NeueMachina-800";
   src: url("/fonts/NeueMachina-Ultrabold.otf") format("opentype");
 }
+
+.scroller {
+  max-width: 900px;
+  margin-inline: auto;
+  padding-block: 30px;
+  border-radius: 10px;
+  color: black;
+  font-size: larger;
+  @apply bg-fuchsia-500 font-neueMachinaBold;
+}
+
+.inner-scroller {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.active-scroller {
+  overflow: hidden;
+}
+
+.active-scroller .inner-scroller p {
+  white-space: nowrap;
+}
+
+.active-scroller .inner-scroller {
+  width: fit-content;
+  flex-wrap: nowrap;
+  animation: scroll 40s linear infinite;
+}
+
+@keyframes scroll {
+  to {
+    transform: translate(calc(-50% - 1.5rem));
+  }
+}
