@@ -7,13 +7,15 @@ import { useAccount, useReadContract, useWriteContract } from "wagmi";
 import { abi } from "@/assets/abis/ERC20abi";
 import { useToast } from "@/components/ui/use-toast";
 import { ERC20_ADDRESS } from "@/lib/constants";
+import { rainbowkitConfig } from "@/config/rainbowkitConfig";
+import { waitForTransactionReceipt } from "wagmi/actions";
 
 export default function ERC20Tab(): JSX.Element {
   const { toast } = useToast();
   const [loading, setLoading] = useState<boolean>(false);
   const { address } = useAccount();
 
-  const { data, isLoading, isError } = useReadContract({
+  const { data, isLoading, isError, refetch } = useReadContract({
     abi,
     address: ERC20_ADDRESS,
     functionName: "balanceOf",
@@ -25,11 +27,16 @@ export default function ERC20Tab(): JSX.Element {
   const mintTokens = async () => {
     setLoading(true);
     try {
-      await writeContractAsync({
+      const txHash = await writeContractAsync({
         abi,
         address: ERC20_ADDRESS,
         functionName: "mint",
         args: [address, 100],
+      });
+
+      await waitForTransactionReceipt(rainbowkitConfig, {
+        confirmations: 1,
+        hash: txHash,
       });
 
       setLoading(false);
@@ -37,6 +44,8 @@ export default function ERC20Tab(): JSX.Element {
         title: "Successfully minted tRSK tokens",
         description: "Refresh the page to see changes",
       });
+
+      refetch();
     } catch (e) {
       toast({
         title: "Error",
@@ -76,7 +85,7 @@ export default function ERC20Tab(): JSX.Element {
         </div>
         <div className="text-center z-[-10]">
           <Button disabled={loading || !address} onClick={mintTokens}>
-            {loading ? <Loader /> : "Deposit"}
+            {loading ? <Loader /> : "Get tokens"}
           </Button>
         </div>
         <div className="bg-secondary p-4 rounded-lg">
