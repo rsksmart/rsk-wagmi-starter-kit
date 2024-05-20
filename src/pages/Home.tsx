@@ -1,18 +1,18 @@
-import InfiniteScroll from "@/components/InfiniteScroll";
-import TokenTabs from "@/components/TokenTabs";
+import InfiniteScroll from "@/components/home/InfiniteScroll";
 import Github from "@/components/icons/Github";
 import Button from "@/components/ui/button";
+import Starters from "@/components/home/Starters";
 
-export default function Home() {
+export function Home() {
   const scrollToTabs = () => {
-    const tabsSection = document.getElementById("tabs");
+    const tabsSection = document.getElementById("starters");
     if (tabsSection) {
       tabsSection.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   return (
-    <main className="mb-[100px] max-w-[1100px] mx-auto">
+    <main className="max-w-[1100px] mx-auto">
       <section className="mx-auto flex flex-col items-center justify-center min-h-[90vh]">
         <h1 className="text-[3em] md:text-[4em] lg:text-[7em] flex flex-col gap-5 text-center font-bold font-neueMachinaBold text-balance md:leading-[auto] lg:leading-tight text-black">
           <span className="bg-orange-400 lg:pt-5 px-2 leading-tight">
@@ -31,14 +31,18 @@ export default function Home() {
             <Github /> See code
           </Button>
           <Button className="mt-10 mx-auto" onClick={scrollToTabs}>
-            Try out
+            See more
           </Button>
         </div>
       </section>
 
-      <InfiniteScroll />
+      <div className="my-10">
+        <InfiniteScroll />
+      </div>
 
-      <TokenTabs />
+      <div className="my-40">
+        <Starters />
+      </div>
     </main>
   );
 }
