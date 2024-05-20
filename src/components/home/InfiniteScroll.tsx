@@ -21,20 +21,13 @@ export default function InfiniteScroll(): JSX.Element {
   }, []);
 
   return (
-    <a
-      href="https://taikai.network/rootstock/hackathons/bitcoin-rootstock-hackathon"
-      target="_blank"
-    >
-      <section className="container mx-auto my-10">
-        <div className="scroller" ref={scroller}>
-          <ul className="inner-scroller" ref={scrollerInner}>
-            <p className="paragraph">
-              Join the Hackathon Bitcoin Meets Solidity Hackathon! Innovate,
-              collaborate, and create the future with Rootstock.
-            </p>
-          </ul>
-        </div>
-      </section>
-    </a>
+    <div className="scroller" ref={scroller}>
+      <ul className="inner-scroller" ref={scrollerInner}>
+        <p className="paragraph">
+          Join the Hackathon Bitcoin Meets Solidity Hackathon! Innovate,
+          collaborate, and create the future with Rootstock.
+        </p>
+      </ul>
+    </div>
   );
 }

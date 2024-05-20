@@ -53,6 +53,7 @@
 }
 
 .scroller {
+  width: calc(100vw - 2rem) !important;
   max-width: 900px;
   margin-inline: auto;
   padding-block: 30px;
@@ -69,6 +70,7 @@
 }
 
 .active-scroller {
+  width: 100%;
   overflow: hidden;
 }
 
