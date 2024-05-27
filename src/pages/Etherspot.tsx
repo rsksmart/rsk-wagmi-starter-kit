@@ -1,4 +1,4 @@
-import Demo from "@/components/etherspot/Demo";
+import Demo from "@/components/accountAbstraction/etherspot/Demo";
 
 export function Etherspot(): JSX.Element {
   return (
