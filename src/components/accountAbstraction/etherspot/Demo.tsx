@@ -16,16 +16,14 @@ import { Check, Copy } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { generatePrivateKey, privateKeyToAccount } from "viem/accounts";
 import { parseEther } from "viem/utils";
-import { BigNumber } from 'ethers';
 
 export default function Demo() {
     const [sdk, setSdk] = useState<PrimeSdk | null>(null);
     const { toast } = useToast();
     const [loadingEOA, setLoadingEOA] = useState<boolean>(false);
     const [loadingEtherspotWallet, setLoadingEtherspotWallet] = useState<boolean>(false);
-    const [loadingEstimate, setLoadingEstimate] = useState<boolean>(false);
+    const [loadingOperation, setLoadingOperation] = useState<boolean>(false);
     const [loadingBalance, setLoadingBalance] = useState<boolean>(false);
-    const [loadingSendTx, setLoadingSendTx] = useState<boolean>(false);
     const [eoaWalletAddress, setEoaWalletAddress] = useState("");
     const [etherspotWalletAddress, setEtherspotWalletAddress] = useState("");
     const [copiedEOA, setCopiedEOA] = useState<boolean>(false);
@@ -34,7 +32,6 @@ export default function Demo() {
     const [recipient, setRecipient] = useState("");
     const [value, setValue] = useState("");
     const [balance, setBalance] = useState<string>("");
-    const [estimatedGas, setEstimatedGas] = useState<string>("");
 
     const copy = (address: string, setCopied: (value: boolean) => void) => {
         navigator.clipboard.writeText(address);
@@ -71,7 +68,7 @@ export default function Demo() {
         try {
             const balance = await sdk.getNativeBalance();
             console.log('Account balance:', balance);
-            setBalance(balance);
+            setBalance(balance.toString());
         } catch (error) {
             console.error('Error fetching balance:', error);
             toast({
@@ -102,8 +99,16 @@ export default function Demo() {
             setLoadingEtherspotWallet(false);
         }
     };
-
-    const estimateCost = async () => {
+    /**
+     * This function estimates and transfers a specified value to a recipient using the Arka Paymaster.
+     * It performs several steps including validation, fetching addresses, estimating gas,sending the
+     *  transaction, and waiting for the receipt.
+     * 
+     * Note: All variables that are not environment variables are for development purposes only.
+     * They are not intended for production use and can be found at 
+     * https://github.com/etherspot/etherspot-prime-sdk/blob/master/examples/13-paymaster.ts
+     */
+    const estimateAndTransfer = async () => {
         if (!sdk) {
             console.log('SDK is not initialized');
             return;
@@ -117,7 +122,9 @@ export default function Demo() {
             return;
         }
 
-        setLoadingEstimate(true);
+        setLoadingOperation(true);
+
+
         const apiKey = 'arka_public_key';
         const chainID = 31;
 
@@ -137,20 +144,24 @@ export default function Demo() {
             const op = await sdk.estimate({
                 paymasterDetails: { url: `https://arka.etherspot.io?apiKey=${apiKey}&chainId=${chainID}`, context: { mode: 'sponsor' } }
             });
+            
             console.log('Estimated UserOp:', op);
 
-            // Calculate the total estimated gas
-            const callGasLimit = BigNumber.from(op.callGasLimit);
-            const preVerificationGas = BigNumber.from(op.preVerificationGas);
-            const verificationGasLimit = BigNumber.from(op.verificationGasLimit);
-            const totalEstimatedGas = callGasLimit.add(preVerificationGas).add(verificationGasLimit);
-            console.log(`Total estimated gas: ${totalEstimatedGas.toString()}`);
-            setEstimatedGas(totalEstimatedGas.toString());
+            const uoHash = await sdk.send(op);
+           
+            console.log('UserOpHash:', uoHash);
 
-            toast({
-                title: "Success",
-                description: `Estimated gas: ${totalEstimatedGas.toString()}`,
-            });
+            // Wait for transaction receipt
+            console.log('Waiting for transaction...');
+            
+            let userOpsReceipt = null;
+            const timeout = Date.now() + 60000; // 1 minute timeout
+            const sleep = (ms: any) => new Promise(resolve => setTimeout(resolve, ms));
+            while ((userOpsReceipt == null) && (Date.now() < timeout)) {
+                await sleep(2000);
+                userOpsReceipt = await sdk.getUserOpReceipt(uoHash);
+            }
+            console.log('Transaction Receipt:', userOpsReceipt);
         } catch (error) {
             console.error('Error using Arka Paymaster:', error);
             toast({
@@ -158,31 +169,15 @@ export default function Demo() {
                 description: "Failed to estimate transaction cost.",
             });
         } finally {
-            setLoadingEstimate(false);
+            setLoadingOperation(false);
         }
     };
 
-    const sendTx = async () => {
-        setLoadingSendTx(true);
-        try {
-            // Add transaction sending logic here
-            toast({
-                title: "Transaction Sent",
-                description: "Your transaction has been sent.",
-            });
-        } catch (error) {
-            console.error('Error sending transaction:', error);
-            toast({
-                title: "Error",
-                description: "Failed to send transaction.",
-            });
-        } finally {
-            setLoadingSendTx(false);
-        }
-    };
+
 
     useEffect(() => {
         if (eoaPrivateKey) {
+
             const bundlerApiKey =
                 "eyJvcmciOiI2NTIzZjY5MzUwOTBmNzAwMDFiYjJkZWIiLCJpZCI6IjMxMDZiOGY2NTRhZTRhZTM4MGVjYjJiN2Q2NDMzMjM4IiwiaCI6Im11cm11cjEyOCJ9";
             const customBundlerUrl = "https://rootstocktestnet-bundler.etherspot.io/";
@@ -285,7 +280,7 @@ export default function Demo() {
                     <span className="font-neueMachinaBold px-2 pt-[5px] text-black rounded-full bg-orange-500 grid place-items-center">
                         04
                     </span>
-                    <p>Estimate the transaction cost:</p>
+                    <p>Estimate and send the transaction</p>
                 </div>
                 <div className="flex flex-col justify-center">
                     <input
@@ -304,30 +299,10 @@ export default function Demo() {
                     />
                     <Button
                         className="justify-self-center"
-                        onClick={estimateCost}
-                        disabled={loadingEstimate || !etherspotWalletAddress}
+                        onClick={estimateAndTransfer}
+                        disabled={loadingOperation || !etherspotWalletAddress}
                     >
-                        {loadingEstimate ? <Loader /> : "Estimate"}
-                    </Button>
-                    {estimatedGas && (
-                        <p className="mt-3 opacity-60">
-                            Estimated Gas: {estimatedGas}
-                        </p>
-                    )}
-                </div>
-                <div className="flex items-center gap-4">
-                    <span className="font-neueMachinaBold px-2 pt-[5px] text-black rounded-full bg-green-500 grid place-items-center">
-                        05
-                    </span>
-                    <p>Send the transaction</p>
-                </div>
-                <div className="flex flex-col justify-center">
-                    <Button
-                        className="justify-self-center"
-                        onClick={sendTx}
-                        disabled={loadingSendTx || !etherspotWalletAddress}
-                    >
-                        {loadingSendTx ? <Loader /> : "Send"}
+                        {loadingOperation ? <Loader /> : "Estimate and Send"}
                     </Button>
                 </div>
             </CardContent>
