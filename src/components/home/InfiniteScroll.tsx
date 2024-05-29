@@ -21,16 +21,13 @@ export default function InfiniteScroll(): JSX.Element {
   }, []);
 
   return (
-    <section className="container mx-auto my-10">
-      <div className="scroller" ref={scroller}>
-        <ul className="inner-scroller" ref={scrollerInner}>
-          <p className="paragraph">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nesciunt
-            ipsum ratione odit temporibus iste, quidem soluta omnis id dicta
-            deserunt, tempora distinctio!
-          </p>
-        </ul>
-      </div>
-    </section>
+    <div className="scroller" ref={scroller}>
+      <ul className="inner-scroller" ref={scrollerInner}>
+        <p className="paragraph">
+          Join the Hackathon Bitcoin Meets Solidity Hackathon! Innovate,
+          collaborate, and create the future with Rootstock.
+        </p>
+      </ul>
+    </div>
   );
 }

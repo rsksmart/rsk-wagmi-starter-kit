@@ -61,8 +61,8 @@ export default function ERC20Tab(): JSX.Element {
     <Card className="mt-10 max-w-[600px]">
       <CardHeader>
         <p className="text-white/80">
-          This is an implementation of a faucet of tRSK tokens (ERC-20 deployed
-          on the Rootstock Testnet).
+          This is a faucet of tRSK tokens (ERC-20 deployed on the Rootstock
+          Testnet).
         </p>
       </CardHeader>
       <CardContent className="space-y-5">
