@@ -237,7 +237,7 @@ export default function Demo() {
                     <span className="font-neueMachinaBold px-2 pt-[5px] text-black rounded-full bg-fuchsia-500 grid place-items-center">
                         02
                     </span>
-                    <p>Generate the paymaster address</p>
+                    <p>Generate the Smart Account address</p>
                 </div>
                 <div className="flex flex-col justify-center">
                     <Button
