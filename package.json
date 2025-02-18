@@ -16,7 +16,7 @@
     "@radix-ui/react-tabs": "^1.0.4",
     "@radix-ui/react-toast": "^1.1.5",
     "@rainbow-me/rainbowkit": "^2.1.0",
-    "@tanstack/react-query": "^5.29.2",
+    "@tanstack/react-query": "^5.66.7",
     "buffer": "^6.0.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
