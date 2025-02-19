@@ -55,7 +55,7 @@ Copy the `.env.example` file and rename it to `.env`, and add a variables:
 
 ```shell
 VITE_WC_PROJECT_ID='your Reown (prev wallet connect) key'
-VITE_BUNDLER_API_KEY=your_api_key_here
+VITE_BUNDLER_API_KEY='etherspot_public_key'
 VITE_CUSTOM_BUNDLER_URL=https://rootstocktestnet-bundler.etherspot.io/
 ```
 > **Note**: Go to [Reown Dashboard](https://cloud.reown.com/sign-in) and create a project, copy the project ID and paste it on `VITE_WC_PROJECT_ID`.
@@ -64,7 +64,7 @@ VITE_CUSTOM_BUNDLER_URL=https://rootstocktestnet-bundler.etherspot.io/
 
 > **Note**: We recommend using yarn package manager given that there are some conflicts when installing some packages with npm.
 
-For the variables `VITE_BUNDLER_API_KEY` and `VITE_CUSTOM_BUNDLER_URL`, these are used for the etherspot gasless demo part, and these variables (for testnet) are public and can be used as shown next. For production use, please obtain bundler api key and bundler url from [Etherspot](https://etherspot.io/)
+For the variables `VITE_BUNDLER_API_KEY` and `VITE_CUSTOM_BUNDLER_URL`, these are used for the etherspot gasless demo part, and these variables (for testnet) are public. For production use, please obtain bundler api key and bundler url from [Etherspot](https://etherspot.io/)
 
 ```shell
 yarn
