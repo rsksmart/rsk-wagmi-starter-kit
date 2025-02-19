@@ -51,6 +51,15 @@ cd rsk-wagmi-starter-kit
 
 #### 2. Install Dependencies
 
+Copy the `.env.example` file and rename it to `.env`, and add a variable called:
+
+```shell
+VITE_WC_PROJECT_ID='your Reown (prev wallet connect) key'
+```
+> **Note**: Go to [Reown Dashboard](https://cloud.reown.com/sign-in) and create a project, copy the project ID and paste it here.
+
+#### 2. Install Dependencies
+
 > **Note**: We recommend using yarn package manager given that there are some conflicts when installing some packages with npm.
 
 ```shell
