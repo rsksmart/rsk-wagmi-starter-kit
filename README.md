@@ -49,24 +49,28 @@ git clone https://github.com/chrisarevalodev/rsk-wagmi-starter-kit.git
 cd rsk-wagmi-starter-kit
 ```
 
-#### 2. Install Dependencies
+#### 2. Configure Project
 
-Copy the `.env.example` file and rename it to `.env`, and add a variable called:
+Copy the `.env.example` file and rename it to `.env`, and add a variables:
 
 ```shell
 VITE_WC_PROJECT_ID='your Reown (prev wallet connect) key'
+VITE_BUNDLER_API_KEY='etherspot_public_key'
+VITE_CUSTOM_BUNDLER_URL=https://rootstocktestnet-bundler.etherspot.io/
 ```
-> **Note**: Go to [Reown Dashboard](https://cloud.reown.com/sign-in) and create a project, copy the project ID and paste it here.
+> **Note**: Go to [Reown Dashboard](https://cloud.reown.com/sign-in) and create a project, copy the project ID and paste it on `VITE_WC_PROJECT_ID`.
 
-#### 2. Install Dependencies
+#### 3. Install Dependencies
 
 > **Note**: We recommend using yarn package manager given that there are some conflicts when installing some packages with npm.
+
+For the variables `VITE_BUNDLER_API_KEY` and `VITE_CUSTOM_BUNDLER_URL`, these are used for the etherspot gasless demo part, and these variables (for testnet) are public. For production use, please obtain bundler api key and bundler url from [Etherspot](https://etherspot.io/)
 
 ```shell
 yarn
 ```
 
-#### 3. Run Project
+#### 4. Run Project
 
 ```shell
 yarn dev
