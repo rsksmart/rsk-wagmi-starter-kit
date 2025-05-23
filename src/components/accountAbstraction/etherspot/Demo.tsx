@@ -178,8 +178,7 @@ export default function Demo() {
     useEffect(() => {
         if (eoaPrivateKey) {
 
-            const bundlerApiKey =
-                "eyJvcmciOiI2NTIzZjY5MzUwOTBmNzAwMDFiYjJkZWIiLCJpZCI6IjMxMDZiOGY2NTRhZTRhZTM4MGVjYjJiN2Q2NDMzMjM4IiwiaCI6Im11cm11cjEyOCJ9";
+            const bundlerApiKey = import.meta.env.VITE_BUNDLER_API_KEY;
             const customBundlerUrl = "https://rootstocktestnet-bundler.etherspot.io/";
 
             const primeSdk = new PrimeSdk(
